@@ -6,8 +6,8 @@ mongoose.connect('mongodb://localhost/causefolio');
 
 const saveUser = (name, email, callback) => {
   const newUser = new User({
-    name: name,
-    email: email,
+    name,
+    email,
   });
 
   newUser.save((err) => {
@@ -21,23 +21,20 @@ const saveUser = (name, email, callback) => {
 
 const saveFund = (name, charities, cause, callback) => {
 
-  const updatedCharities = assignCharityPercentages(charities)
-
-  const newCategory = new Category({
-    name: name,
-    cause: cause,
-    charities: updatedCharities,
+  const newFund = new Fund({
+    fund_id: new mongoose.Types.ObjectId,
+    name,
+    charities,
   });
 
-  newCategory.save((err) => {
+  newFund.save((err) => {
     if (err) {
       callback(err)
     } else {
       callback(null)
     }
   });
-
-}
+};
 
 saveFund('Generic Category', [{
   name: 'CauseOne',
@@ -47,4 +44,8 @@ saveFund('Generic Category', [{
   } else {
     console.log('cat saved')
   }
-})
+});
+
+const saveDonation = () => {
+
+}

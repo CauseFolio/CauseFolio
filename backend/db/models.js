@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
-const helpers = require('./helpers.js')
 
 const fundSchema = mongoose.Schema({
-  fund_id: new mongoose.Types.ObjectId,
+  fund_id: mongoose.Schema.Types.ObjectId,
   name: String,
   charities: [{
     name: String,
@@ -10,23 +9,19 @@ const fundSchema = mongoose.Schema({
   }],
 });
 
-fundSchema.pre('save', async function() {
-  await 
-})
-
 const userSchema = mongoose.Schema({
   email: String,
   name: String,
 });
 
 const donationSchema = mongoose.Schema({
-  pandapay_id: new mongoose.Types.ObjectId,
+  pandapay_id: mongoose.Schema.Types.ObjectId,
   source: String,
   amount: Number,
   email: String,
   platformFee: Number,
   timestamp: Date,
-  fund: { type: Schema.Types.ObjectId, ref: 'Fund' }
+  fund: { type: mongoose.Schema.Types.ObjectId, ref: 'Fund' },
 });
 
 const Fund = mongoose.model('Category', fundSchema);
