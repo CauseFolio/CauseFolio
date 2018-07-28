@@ -16,6 +16,7 @@
     "eslint-plugin-react": "^7.10.0"
   },
   "dependencies": {
+    "dotenv": "^6.0.0",
     "mongoose": "^5.2.5",
     "mongoose-auto-increment": "^5.0.1"
   }
