@@ -45,15 +45,15 @@ const saveDonation = (source, amount, email, platformFee, timestamp, fundId, cal
     email,
     platformFee,
     timestamp,
-    fund: fundId;
+    fund: fundId,
   })
 
   newDonation.save((err) => {
     if (err) {
-      callback(err)
+      callback(err);
     } else {
-      callback(null)
+      callback(null);
     }
-  })
+  });
 
 }
