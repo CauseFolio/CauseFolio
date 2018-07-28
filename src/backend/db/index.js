@@ -57,3 +57,20 @@ const saveDonation = (source, amount, email, platformFee, timestamp, fundId, cal
   });
 
 }
+
+const fetchFundId = (fundName, callback) => {
+
+  Fund.find({name: fundName}).then((err, data) => {
+    if (err) {
+      callback(err, null)
+    } else {
+      callback(null, data[0].fund_id)
+    }
+  })
+
+}
+
+module.exports.saveFund = saveFund;
+module.exports.saveDonation = saveDonation;
+module.exports.saveUser = saveUser;
+module.exports.fetchFundId = fetchFundId;
