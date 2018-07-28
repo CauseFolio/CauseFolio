@@ -1,6 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import styledNormalize from 'styled-normalize'
+import { injectGlobal } from 'styled-components'
+
+injectGlobal`
+  ${styledNormalize}
+`
 
 const App = () => (
   <div className="App">
