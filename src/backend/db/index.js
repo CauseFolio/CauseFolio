@@ -36,16 +36,16 @@ const saveFund = (name, charities, cause, callback) => {
   });
 };
 
-saveFund('Generic Category', [{
-  name: 'CauseOne',
-}, { name: 'Better Cause' } ], 'trololololololololo', (err) => {
-  if (err) {
-    console.log(err)
-  } else {
-    console.log('cat saved')
-  }
-});
+const saveDonation = (source, amount, email, platformFee, timestamp, fundId) => {
 
-const saveDonation = () => {
+  const newDonation = new Donation({
+    pandapay_id: new mongoose.Types.ObjectId,
+    source,
+    amount,
+    email,
+    platformFee,
+    timestamp,
+    fund: fundId;
+  })
 
 }
