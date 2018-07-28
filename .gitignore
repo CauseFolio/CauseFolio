@@ -1,4 +1,4 @@
-src/client/.cache
-src/client/dist
+.cache
+dist
 node_modules
 .env
