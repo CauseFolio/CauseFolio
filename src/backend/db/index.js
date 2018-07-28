@@ -36,7 +36,7 @@ const saveFund = (name, charities, cause, callback) => {
   });
 };
 
-const saveDonation = (source, amount, email, platformFee, timestamp, fundId) => {
+const saveDonation = (source, amount, email, platformFee, timestamp, fundId, callback) => {
 
   const newDonation = new Donation({
     pandapay_id: new mongoose.Types.ObjectId,
@@ -46,6 +46,14 @@ const saveDonation = (source, amount, email, platformFee, timestamp, fundId) => 
     platformFee,
     timestamp,
     fund: fundId;
+  })
+
+  newDonation.save((err) => {
+    if (err) {
+      callback(err)
+    } else {
+      callback(null)
+    }
   })
 
 }
