@@ -2,13 +2,14 @@ const path = require('path');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const db = require('../db/index.js');
 const axios = require('axios');
 
-// load .env in development
-if (!process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'development') {
   require('dotenv').config();
 }
+console.log(process.env);
+
+const db = require('../db/index.js');
 
 app.use(express.static('dist'));
 app.use(bodyParser.json());
@@ -21,7 +22,7 @@ app.post('/donations', (req, res) => {
   if (req.body.userFund) {
     //deal with the case where multiple funds to donate to
   } else {
-    grantsCompleted = 0;
+    let grantsCompleted = 0;
     db.findFundById(req.body.fundId, false, data => {
       if (data.length === 0) {
         res.status(500).send('error finding fund information');

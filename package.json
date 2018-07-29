@@ -7,9 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "parcel": "parcel src/client/index.html",
     "watch": "parcel watch src/client/index.html",
-    "build": "cross-env NODE_ENV=production parcel build src/client/index.html",
-    "start": "cross-env NODE_ENV=production node src/backend/server/index.js",
-    "dev": "run-p watch start",
+    "build": "parcel build src/client/index.html",
+    "start": "cross-env NODE_ENV=production npm run build && node src/backend/server/index.js",
+    "dev": "cross-env NODE_ENV=development run-p watch start",
     "script": "node src/backend/db/lib/seedfunds.js"
   },
   "author": "",

@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const { Fund, User, Donation, Userfund } = require('./models.js');
 const { assignCharityPercentages } = require('./lib/helpers.js');
 
+console.log(process.env.MONGO_URI);
 mongoose.connect(process.env.MONGO_URI);
 
 const fetchFunds = callback => {
