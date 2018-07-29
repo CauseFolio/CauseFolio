@@ -36,16 +36,41 @@ const saveFund = (name, charities, cause, callback) => {
   });
 };
 
-saveFund('Generic Category', [{
-  name: 'CauseOne',
-}, { name: 'Better Cause' } ], 'trololololololololo', (err) => {
-  if (err) {
-    console.log(err)
-  } else {
-    console.log('cat saved')
-  }
-});
+const saveDonation = (source, amount, email, platformFee, timestamp, fundId, callback) => {
 
-const saveDonation = () => {
+  const newDonation = new Donation({
+    pandapay_id: new mongoose.Types.ObjectId,
+    source,
+    amount,
+    email,
+    platformFee,
+    timestamp,
+    fund: fundId,
+  })
+
+  newDonation.save((err) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(null);
+    }
+  });
 
 }
+
+const fetchFundId = (fundName, callback) => {
+
+  Fund.find({name: fundName}).then((err, data) => {
+    if (err) {
+      callback(err, null)
+    } else {
+      callback(null, data[0].fund_id)
+    }
+  })
+
+}
+
+module.exports.saveFund = saveFund;
+module.exports.saveDonation = saveDonation;
+module.exports.saveUser = saveUser;
+module.exports.fetchFundId = fetchFundId;
