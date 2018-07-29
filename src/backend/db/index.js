@@ -45,6 +45,38 @@ const saveFund = (name, charities, callback) => {
   });
 };
 
+const saveUserfund = (fundIds, callback) => {
+
+  const fundInfo = fundIds.map((id) => {
+    return {fund: id,
+      percent_donation: 1.0/fundIds.length}
+  })
+
+  const newUserfund = new Userfund({
+    funds: fundInfo
+  })
+
+  newUserfund.save((err, data) => {
+    if (err) {
+      callback(err, null)
+    } else {
+      callback(null, data)
+    }
+  })
+
+} 
+
+const populateUserfund = (id, callback) => {
+
+  Userfund.findOne({_id: id}).populate('funds').exec((err, userfund) => {
+    if (err) {
+      callback(err, null)
+    } else {
+      callback(null, userfund)
+    }
+  })
+}
+
 const findFundById = (id, userFund, callback) => {
 
   console.log("id", id)
@@ -60,23 +92,14 @@ const findFundById = (id, userFund, callback) => {
   }
 }
 
-const fetchFundId = (fundName, callback) => {
-
-  Fund.find({name: fundName}).then((err, data) => {
-    if (err) {
-      callback(err, null)
-    } else {
-      callback(null, data[0].fund_id)
-    }
-  })
-
-}
-
 module.exports.saveFund = saveFund;
+module.exports.saveUserfund = saveUserfund
 module.exports.saveUser = saveUser;
 module.exports.fetchFunds = fetchFunds;
 module.exports.User = User;
 module.exports.Donation = Donation;
 module.exports.Fund = Fund;
 module.exports.findFundById = findFundById;
+module.exports.populateUserfund = populateUserfund
+
 
