@@ -45,26 +45,19 @@ const saveFund = (name, charities, callback) => {
   });
 };
 
-const saveDonation = (source, amount, email, platformFee, timestamp, fundId, callback) => {
+const findFundById = (id, userFund, callback) => {
 
-  const newDonation = new Donation({
-    pandapay_id: new mongoose.Types.ObjectId,
-    source,
-    amount,
-    email,
-    platformFee,
-    timestamp,
-    fund: fundId,
-  })
+  console.log("id", id)
 
-  newDonation.save((err) => {
-    if (err) {
-      callback(err);
-    } else {
-      callback(null);
-    }
-  });
-
+  if (userFund) {
+    Userfund.find({_id: id}).then((data) => {
+      callback(data)
+    })
+  } else {
+    Fund.find({_id: id}).then((data) => {
+      callback(data)
+    })
+  }
 }
 
 const fetchFundId = (fundName, callback) => {
@@ -80,9 +73,10 @@ const fetchFundId = (fundName, callback) => {
 }
 
 module.exports.saveFund = saveFund;
-module.exports.saveDonation = saveDonation;
 module.exports.saveUser = saveUser;
 module.exports.fetchFunds = fetchFunds;
 module.exports.User = User;
 module.exports.Donation = Donation;
 module.exports.Fund = Fund;
+module.exports.findFundById = findFundById;
+

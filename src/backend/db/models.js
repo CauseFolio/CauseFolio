@@ -21,19 +21,10 @@ const userSchema = mongoose.Schema({
   name: String,
 });
 
-const donationSchema = mongoose.Schema({
-  pandapay_id: String,
-  timestamp: Date,
-  userfund: { type: mongoose.Schema.Types.ObjectId, ref: 'Userfund'},
-  fund: { type: mongoose.Schema.Types.ObjectId, ref: 'Fund' },
-});
-
 const Fund = mongoose.model('Fund', fundSchema);
 const User = mongoose.model('User', userSchema);
-const Donation = mongoose.model('Donation', donationSchema);
 const Userfund = mongoose.model('Userfund', userfundSchema);
 
 module.exports.User = User;
 module.exports.Fund = Fund;
-module.exports.Donation = Donation;
 module.exports.Userfund = Userfund;

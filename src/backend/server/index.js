@@ -14,21 +14,37 @@ app.use(bodyParser.json());
 
 app.get('*', (req, res) => res.sendFile(path.resolve('./../dist/index.html')));
 
+//more than one fund can go to this endpoint
+
 app.post('/donations', (req, res) => {
   //post a donation
-  axios.post('https://api.pandapay.io/v1/donations', {
-    amount: req.amount,
-    currency: 'usd',
-    source: req.source,
-    receipt_email: req.email,
-    platform_fee: req.platformFee,
-  }).then((response) => {
-    res.send(response)
-  }).catch((err) => {
-    console.log(err)
-    res.status(500).send('could not post')
-  })
+
+  if (req.body.userFund) {
+    //deal with the case where multiple funds to donate to
+  } else {
+    db.findFundById(req.body.fundId, false, (data) => {
+      if (data.length === 0) {
+        res.status(500).send('error finding fund information')
+      } else {
+        axios.post(`https://${process.env.PANDAPAY_SECRET_KEY}:@api.pandapay.io/v1/donations`, {
+          amount: req.body.amount,
+          currency: 'usd',
+          source: req.body.source,
+          receipt_email: req.body.email,
+          platform_fee: 0.02 * req.body.amount
+        }).then((response) => {
+          res.send(data.charities)
+          
+        //but we will actually 
+        }).catch((err) => {
+          console.log(err)
+          res.status(500).send('could not post')
+      })
+  }
+})}
 });
+
+
 
 app.get('/funds/charities', (req, res) => {
   //get information for all causes and all charities
