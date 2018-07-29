@@ -5,6 +5,9 @@ import { injectGlobal } from 'styled-components';
 import styled from 'styled-components';
 import Typekit from 'react-typekit';
 import logo from './logo.svg';
+import banner from './banner.jpg';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import Donate from './donate.jsx';
 
 injectGlobal`
   ${styledNormalize}
@@ -17,6 +20,11 @@ injectGlobal`
 
   .center {
     text-align: center;
+  }
+
+  h1 {
+    font-size: 40px;
+    margin-bottom: 0;
   }
 `;
 
@@ -64,7 +72,7 @@ const HR = styled.hr`
 const Banner = styled.div`
   width: 100%;
   height: 300px;
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.1);
   color: white;
   grid-area: banner;
   text-align: center;
@@ -72,6 +80,21 @@ const Banner = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
+  overflow: hidden;
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(${banner});
+    background-size: cover;
+    background-position: center;
+    filter: blur(5px);
+    z-index: -1;
+  }
 `;
 
 const Callouts = styled.section`
@@ -89,8 +112,6 @@ const Callout = styled.div`
 `;
 
 const CTA = styled.section`
-  color: #fff;
-  background-color: blue;
   grid-area: cta;
   text-align: center;
   padding: 30px 0 60px 0;
@@ -141,10 +162,7 @@ const App = () => (
     </Callouts>
 
     <CTA>
-      <h1>Get Started</h1>
-      <h2>Choose 1-3 Cause Funds you care about</h2>
-
-      <button>Next</button>
+      <Donate />
     </CTA>
 
     <Footer>
@@ -153,7 +171,12 @@ const App = () => (
   </AppContainer>
 );
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+  <Router>
+    <App />
+  </Router>,
+  document.getElementById('root')
+);
 
 // Hot Module Replacement
 if (module.hot) {
