@@ -14,7 +14,7 @@ for (let idx = 1; idx <= 11; idx++) {
           percent_donation: 1.0/3.0
         }
       })
-      db.saveFund(charities[0].category.categoryName, charitiesInfo, charities[0].cause.causeName, (err, data) => {
+      db.saveFund(charities[0].category.categoryName, charitiesInfo, (err, data) => {
         if (err) {
           console.log(err)
         } else {
