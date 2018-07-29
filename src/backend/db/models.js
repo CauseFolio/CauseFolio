@@ -2,24 +2,27 @@ const mongoose = require('mongoose');
 
 const fundSchema = mongoose.Schema({
   name: String,
-  charities: [{
-    name: String,
-    id: String,
-    percent_donation: Number,
-  }],
+  charities: [
+    {
+      name: String,
+      id: String,
+      percent_donation: Number
+    }
+  ]
 });
 
 const userfundSchema = mongoose.Schema({
-
-  funds: [{
-    fund: {type: mongoose.Schema.Types.ObjectId, ref: 'Fund'},
-    percent_donation: Number
-  }]
-})
+  funds: [
+    {
+      fund: { type: mongoose.Schema.Types.ObjectId, ref: 'Fund' },
+      percent_donation: Number
+    }
+  ]
+});
 
 const userSchema = mongoose.Schema({
   email: String,
-  name: String,
+  name: String
 });
 
 const Fund = mongoose.model('Fund', fundSchema);

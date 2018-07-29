@@ -64,7 +64,10 @@ class Donate extends React.Component {
 
     fetch(url)
       .then(response => response.json())
-      .then(data => this.setState({ funds: data }));
+      .then(data => {
+        this.setState({ funds: data });
+        console.log(data);
+      });
   }
 
   selectFund(fund) {
@@ -89,7 +92,13 @@ class Donate extends React.Component {
     } else {
       url = `http://localhost:2000/userfunds`;
     }
-    fetch(url, { method: 'POST', body: JSON.stringify(this.state.selectedFunds) })
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ fundIds: this.state.selectedFunds })
+    })
       .then(response => response.json())
       .then(data => {
         console.log(data);

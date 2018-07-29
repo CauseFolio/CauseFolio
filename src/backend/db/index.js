@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const { Fund, User, Donation, Userfund } = require('./models.js');
 const { assignCharityPercentages } = require('./lib/helpers.js');
 
-console.log(process.env.MONGODB_URI);
 mongoose.connect(process.env.MONGODB_URI);
 
 const fetchFunds = callback => {
@@ -10,6 +9,7 @@ const fetchFunds = callback => {
     if (err) {
       callback(err, null);
     } else {
+      console.log(data);
       callback(null, data);
     }
   });
@@ -66,16 +66,13 @@ const saveUserfund = (fundIds, callback) => {
   });
 };
 
-<<<<<<< HEAD
-
-=======
->>>>>>> ee8620d6f00e0551b2c6a7bb76291b895eddc7da
 const getUserfund = (id, callback) => {
   Userfund.findOne({
-    _id: id}
-  ).populate({path: 'funds', populate: {path: 'fund', model: 'Fund'}}).exec(callback);
-}
-
+    _id: id
+  })
+    .populate({ path: 'funds', populate: { path: 'fund', model: 'Fund' } })
+    .exec(callback);
+};
 
 const findFundById = (id, userFund, callback) => {
   console.log('id', id);
@@ -99,10 +96,4 @@ module.exports.User = User;
 module.exports.Donation = Donation;
 module.exports.Fund = Fund;
 module.exports.findFundById = findFundById;
-module.exports.populateUserfund = populateUserfund
-module.exports.getUserfund = getUserfund
-<<<<<<< HEAD
-=======
-
-
->>>>>>> ee8620d6f00e0551b2c6a7bb76291b895eddc7da
+module.exports.getUserfund = getUserfund;

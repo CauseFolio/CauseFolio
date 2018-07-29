@@ -2,12 +2,15 @@ const path = require('path');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 const axios = require('axios');
+
+const { Fund, User, Donation, Userfund } = require('./../db/models.js');
+var ObjectID = require('mongodb').ObjectID;
 
 if (process.env.NODE_ENV === 'development') {
   require('dotenv').config();
 }
-console.log(process.env);
 
 // require('../db/lib/seedfunds.js');
 
@@ -20,67 +23,74 @@ app.use(bodyParser.json());
 
 app.post('/donations', (req, res) => {
   //post a donation
+  let grantsCompleted = 0;
 
-  if (req.body.userFund) {
-    //deal with the case where multiple funds to donate to
-  } else {
-<<<<<<< HEAD
-    let grantsCompleted = 0;
-=======
-    let grantsCompleted = 0
->>>>>>> ee8620d6f00e0551b2c6a7bb76291b895eddc7da
-    db.findFundById(req.body.fundId, false, data => {
-      if (data.length === 0) {
-        res.status(500).send('error finding fund information');
-      } else {
-        axios
-          .post(`https://${process.env.PANDAPAY_SECRET_KEY}:@api.pandapay.io/v1/donations`, {
-            amount: req.body.amount,
-            currency: 'usd',
-            source: req.body.source,
-            receipt_email: req.body.email,
-            platform_fee: 0.02 * req.body.amount
-          })
-          .then((result) => {
-            data[0].charities.forEach((charity) => {
-              axios.post(`https://${process.env.PANDAPAY_SECRET_KEY}:@api.pandapay.io/v1/donations/${result.data.id}/grants`, {
-                amount: req.body.amount * charity.percent_donation,
-                destination: charity.id.toString().slice(0,2) + '-' + charity.id.toString().slice(2)
-              })
-              .then((response) => {
-                console.log('THIS URL WORKED', `https://${process.env.PANDAPAY_SECRET_KEY}:@api.pandapay.io/v1/donations/${result.data.id}/grants`)
-                console.log(charity)
-                grantsCompleted++
-                if (grantsCompleted === data[0].charities.length) {
-                  res.send('success on creating grants')
-                }
-              })
-              .catch((error) => {
-                console.log('THIS URL DID NOT', `https://${process.env.PANDAPAY_SECRET_KEY}:@api.pandapay.io/v1/donations/${result.data.id}/grants`)
-                console.log(charity)
-                res.status(500).send('Error posting a grant')
-              })
-            })
-          })
-          .catch(err => {
-            console.log(err);
-            res.status(500).send('could not post');
-          });
-      }
-    });
-  }
+  Fund.findById(req.body.fundId, function(err, fund) {
+    if (err) console.log(err);
+    console.log(fund);
+  });
+
+  // db.findFundById(req.body.fundId, false, data => {
+  //   if (data.length === 0) {
+  //     res.status(500).send('error finding fund information');
+  //   } else {
+  //     axios
+  //       .post(`https://${process.env.PANDAPAY_SECRET_KEY}:@api.pandapay.io/v1/donations`, {
+  //         amount: req.body.amount,
+  //         currency: 'usd',
+  //         source: req.body.source,
+  //         receipt_email: req.body.email,
+  //         platform_fee: 0.02 * req.body.amount
+  //       })
+  //       .then(result => {
+  //         data[0].charities.forEach(charity => {
+  //           axios
+  //             .post(
+  //               `https://${process.env.PANDAPAY_SECRET_KEY}:@api.pandapay.io/v1/donations/${result.data.id}/grants`,
+  //               {
+  //                 amount: req.body.amount * charity.percent_donation,
+  //                 destination: charity.id.toString().slice(0, 2) + '-' + charity.id.toString().slice(2)
+  //               }
+  //             )
+  //             .then(response => {
+  //               console.log(
+  //                 'THIS URL WORKED',
+  //                 `https://${process.env.PANDAPAY_SECRET_KEY}:@api.pandapay.io/v1/donations/${result.data.id}/grants`
+  //               );
+  //               console.log(charity);
+  //               grantsCompleted++;
+  //               if (grantsCompleted === data[0].charities.length) {
+  //                 res.send('success on creating grants');
+  //               }
+  //             })
+  //             .catch(error => {
+  //               console.log(
+  //                 'THIS URL DID NOT',
+  //                 `https://${process.env.PANDAPAY_SECRET_KEY}:@api.pandapay.io/v1/donations/${result.data.id}/grants`
+  //               );
+  //               console.log(charity);
+  //               res.status(500).send('Error posting a grant');
+  //             });
+  //         });
+  //       })
+  //       .catch(err => {
+  //         console.log(err);
+  //         res.status(500).send('could not post');
+  //       });
+  //   }
+  // });
 });
 
 app.post('/userfunds', (req, res) => {
   db.saveUserfund(req.body.fundIds, (err, data) => {
     if (err) {
-      res.status(500).send('error saving user fund')
+      res.status(500).send('error saving user fund');
     } else {
       db.getUserfund(data.id, (err, result) => {
         if (err) {
-          res.status(500).send('error populating user fund')
+          res.status(500).send('error populating user fund');
         } else {
-          res.send(result)
+          res.send(result);
         }
       });
     }
@@ -88,30 +98,28 @@ app.post('/userfunds', (req, res) => {
 });
 
 app.get('/funds/:id', (req, res) => {
-
   if (req.body.userFund) {
     db.findFundById(req.params.id, true, (err, data) => {
-      res.send(data)
-    })
+      res.send(data);
+    });
   } else {
     db.findFundById(req.params.id, false, (err, data) => {
-      res.send(data)
-    })
+      res.send(data);
+    });
   }
-})
+});
 
 app.get('/funds/:id', (req, res) => {
-
   if (req.body.userFund) {
     db.findFundById(req.params.id, true, (err, data) => {
-      res.send(data)
-    })
+      res.send(data);
+    });
   } else {
     db.findFundById(req.params.id, false, (err, data) => {
-      res.send(data)
-    })
+      res.send(data);
+    });
   }
-})
+});
 
 app.get('/funds', (req, res) => {
   //get information for all categories

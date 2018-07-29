@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import Typekit from 'react-typekit';
 import logo from './logo.svg';
 import banner from './banner.jpg';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import Donate from './donate.jsx';
 import Funds from './funds';
 import Form from './form';
@@ -164,9 +164,11 @@ const App = () => (
     </Callouts>
 
     <CTA>
-      <Route path="/" component={Donate} />
-      <Route path="/funds/:id" component={Funds} />
-      <Route path="/form/:id" component={Form} />
+      <Switch>
+        <Route path="/form/:id" component={Form} />
+        <Route path="/funds/:id" component={Funds} />
+        <Route path="/" component={Donate} />
+      </Switch>
     </CTA>
 
     <Footer>
