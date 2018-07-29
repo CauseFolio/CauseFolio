@@ -55,7 +55,14 @@ class Donate extends React.Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:2000/funds')
+    let url;
+    if (process.env.NODE.ENV === 'production') {
+      url = 'https://https://causefolio.herokuapp.com/funds';
+    } else {
+      url = 'http://localhost:2000/funds';
+    }
+
+    fetch(url)
       .then(response => response.json())
       .then(data => this.setState({ funds: data }));
   }
