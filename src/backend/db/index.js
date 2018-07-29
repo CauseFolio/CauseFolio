@@ -2,25 +2,25 @@ const mongoose = require('mongoose');
 const { Fund, User, Donation, Userfund } = require('./models.js');
 const { assignCharityPercentages } = require('./lib/helpers.js');
 
-mongoose.connect('mongodb://localhost/causefolio');
+mongoose.connect(process.env.MONGO_URI);
 
-const fetchFunds = (callback) => {
+const fetchFunds = callback => {
   Fund.find({}, (err, data) => {
     if (err) {
-      callback(err, null)
+      callback(err, null);
     } else {
-      callback(null, data)
+      callback(null, data);
     }
-  })
-}
+  });
+};
 
 const saveUser = (name, email, callback) => {
   const newUser = new User({
     name,
-    email,
+    email
   });
 
-  newUser.save((err) => {
+  newUser.save(err => {
     if (err) {
       callback(err);
     } else {
@@ -30,76 +30,73 @@ const saveUser = (name, email, callback) => {
 };
 
 const saveFund = (name, charities, callback) => {
-
   const newFund = new Fund({
     name,
-    charities,
+    charities
   });
 
-  newFund.save((err) => {
+  newFund.save(err => {
     if (err) {
-      callback(err)
+      callback(err);
     } else {
-      callback(null)
+      callback(null);
     }
   });
 };
 
 const saveUserfund = (fundIds, callback) => {
-
-  const fundInfo = fundIds.map((id) => {
-    return {fund: id,
-      percent_donation: 1.0/fundIds.length}
-  })
+  const fundInfo = fundIds.map(id => {
+    return {
+      fund: id,
+      percent_donation: 1.0 / fundIds.length
+    };
+  });
 
   const newUserfund = new Userfund({
     funds: fundInfo
-  })
+  });
 
   newUserfund.save((err, data) => {
     if (err) {
-      callback(err, null)
+      callback(err, null);
     } else {
-      callback(null, data)
+      callback(null, data);
     }
-  })
-
-} 
+  });
+};
 
 const populateUserfund = (id, callback) => {
-
-  Userfund.findOne({_id: id}).populate('funds').exec((err, userfund) => {
-    if (err) {
-      callback(err, null)
-    } else {
-      callback(null, userfund)
-    }
-  })
-}
+  Userfund.findOne({ _id: id })
+    .populate('funds')
+    .exec((err, userfund) => {
+      if (err) {
+        callback(err, null);
+      } else {
+        callback(null, userfund);
+      }
+    });
+};
 
 const findFundById = (id, userFund, callback) => {
-
-  console.log("id", id)
+  console.log('id', id);
 
   if (userFund) {
-    Userfund.find({_id: id}).then((data) => {
-      callback(data)
-    })
+    Userfund.find({ _id: id }).then(data => {
+      callback(data);
+    });
   } else {
-    Fund.find({_id: id}).then((data) => {
-      callback(data)
-    })
+    Fund.find({ _id: id }).then(data => {
+      callback(data);
+    });
   }
-}
+};
 
 module.exports.saveFund = saveFund;
-module.exports.saveUserfund = saveUserfund
+module.exports.saveUserfund = saveUserfund;
 module.exports.saveUser = saveUser;
 module.exports.fetchFunds = fetchFunds;
 module.exports.User = User;
 module.exports.Donation = Donation;
 module.exports.Fund = Fund;
 module.exports.findFundById = findFundById;
-module.exports.populateUserfund = populateUserfund
-
-
+module.exports.populateUserfund = populateUserfund;
