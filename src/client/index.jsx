@@ -114,7 +114,7 @@ const Callout = styled.div`
 const CTA = styled.section`
   grid-area: cta;
   text-align: center;
-  padding: 30px 0 60px 0;
+  padding: 0 0 60px 0;
 `;
 
 const App = () => (
