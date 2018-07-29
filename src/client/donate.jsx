@@ -83,7 +83,18 @@ class Donate extends React.Component {
   }
 
   sendFunds() {
-    fetch('http://localhost:2000/userfunds', { method: 'POST', body: JSON.stringify(this.state.selectedFunds) });
+    let url;
+    if (process.env.NODE_ENV === 'production') {
+      url = `https://causefolio.herokuapp.com/userfunds`;
+    } else {
+      url = `http://localhost:2000/userfunds`;
+    }
+    fetch(url, { method: 'POST', body: JSON.stringify(this.state.selectedFunds) })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        this.props.history.push(`/form/${data._id}`);
+      });
   }
 
   render() {

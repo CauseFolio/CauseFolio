@@ -11,7 +11,9 @@ class Funds extends React.Component {
 
   componentDidMount() {
     const fundId = this.props.match.params.id;
-
+    // post userfund
+    // response is data
+    // get the funds
     let url;
     if (process.env.NODE_ENV === 'production') {
       url = `https://causefolio.herokuapp.com/funds`;
