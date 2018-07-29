@@ -4,6 +4,16 @@ const { assignCharityPercentages } = require('./lib/helpers.js');
 
 mongoose.connect('mongodb://localhost/causefolio');
 
+const fetchFunds = (callback) => {
+  Fund.find({}, (err, data) => {
+    if (err) {
+      callback(err, null)
+    } else {
+      callback(null, data)
+    }
+  })
+}
+
 const saveUser = (name, email, callback) => {
   const newUser = new User({
     name,
@@ -22,9 +32,9 @@ const saveUser = (name, email, callback) => {
 const saveFund = (name, charities, cause, callback) => {
 
   const newFund = new Fund({
-    fund_id: new mongoose.Types.ObjectId,
     name,
     charities,
+    cause
   });
 
   newFund.save((err) => {
@@ -73,4 +83,4 @@ const fetchFundId = (fundName, callback) => {
 module.exports.saveFund = saveFund;
 module.exports.saveDonation = saveDonation;
 module.exports.saveUser = saveUser;
-module.exports.fetchFundId = fetchFundId;
+module.exports.fetchFunds = fetchFunds;

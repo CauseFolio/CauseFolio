@@ -28,7 +28,7 @@ const donationSchema = mongoose.Schema({
   fund: { type: mongoose.Schema.Types.ObjectId, ref: 'Fund' },
 });
 
-const Fund = mongoose.model('Category', fundSchema);
+const Fund = mongoose.model('Fund', fundSchema);
 const User = mongoose.model('User', userSchema);
 const Donation = mongoose.model('Donation', donationSchema);
 const Userfund = mongoose.model('Userfund', userfundSchema);
