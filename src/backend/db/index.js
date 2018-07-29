@@ -66,7 +66,10 @@ const saveUserfund = (fundIds, callback) => {
   });
 };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> ee8620d6f00e0551b2c6a7bb76291b895eddc7da
 const getUserfund = (id, callback) => {
   Userfund.findOne({
     _id: id}
@@ -98,3 +101,8 @@ module.exports.Fund = Fund;
 module.exports.findFundById = findFundById;
 module.exports.populateUserfund = populateUserfund
 module.exports.getUserfund = getUserfund
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> ee8620d6f00e0551b2c6a7bb76291b895eddc7da

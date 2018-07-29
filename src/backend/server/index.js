@@ -24,7 +24,11 @@ app.post('/donations', (req, res) => {
   if (req.body.userFund) {
     //deal with the case where multiple funds to donate to
   } else {
+<<<<<<< HEAD
     let grantsCompleted = 0;
+=======
+    let grantsCompleted = 0
+>>>>>>> ee8620d6f00e0551b2c6a7bb76291b895eddc7da
     db.findFundById(req.body.fundId, false, data => {
       if (data.length === 0) {
         res.status(500).send('error finding fund information');
@@ -82,6 +86,19 @@ app.post('/userfunds', (req, res) => {
     }
   });
 });
+
+app.get('/funds/:id', (req, res) => {
+
+  if (req.body.userFund) {
+    db.findFundById(req.params.id, true, (err, data) => {
+      res.send(data)
+    })
+  } else {
+    db.findFundById(req.params.id, false, (err, data) => {
+      res.send(data)
+    })
+  }
+})
 
 app.get('/funds/:id', (req, res) => {
 
