@@ -9,7 +9,8 @@
     "watch": "parcel watch src/client/index.html",
     "build": "parcel build src/client/index.html",
     "start": "node src/backend/server/index.js",
-    "dev": "run-p watch start"
+    "dev": "run-p watch start",
+    "script": "node src/backend/db/lib/seedfunds.js"
   },
   "author": "",
   "license": "ISC",
