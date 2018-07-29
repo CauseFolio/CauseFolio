@@ -75,6 +75,10 @@ class Donate extends React.Component {
     }
   }
 
+  sendFunds() {
+    fetch('http://localhost:2000/funds/new', { method: 'POST' });
+  }
+
   render() {
     if (this.state.funds) {
       return (
