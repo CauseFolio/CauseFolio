@@ -29,12 +29,11 @@ const saveUser = (name, email, callback) => {
   });
 };
 
-const saveFund = (name, charities, cause, callback) => {
+const saveFund = (name, charities, callback) => {
 
   const newFund = new Fund({
     name,
     charities,
-    cause
   });
 
   newFund.save((err) => {
