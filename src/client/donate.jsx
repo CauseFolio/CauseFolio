@@ -56,7 +56,7 @@ class Donate extends React.Component {
 
   componentDidMount() {
     let url;
-    if (process.env.NODE.ENV === 'production') {
+    if (process.env.NODE_ENV === 'production') {
       url = 'https://https://causefolio.herokuapp.com/funds';
     } else {
       url = 'http://localhost:2000/funds';
