@@ -1,8 +1,18 @@
 const mongoose = require('mongoose');
-const { Fund, User, Donation } = require('./models.js');
+const { Fund, User, Donation, Userfund } = require('./models.js');
 const { assignCharityPercentages } = require('./lib/helpers.js');
 
 mongoose.connect('mongodb://localhost/causefolio');
+
+const fetchFunds = (callback) => {
+  Fund.find({}, (err, data) => {
+    if (err) {
+      callback(err, null)
+    } else {
+      callback(null, data)
+    }
+  })
+}
 
 const saveUser = (name, email, callback) => {
   const newUser = new User({
@@ -19,10 +29,9 @@ const saveUser = (name, email, callback) => {
   });
 };
 
-const saveFund = (name, charities, cause, callback) => {
+const saveFund = (name, charities, callback) => {
 
   const newFund = new Fund({
-    fund_id: new mongoose.Types.ObjectId,
     name,
     charities,
   });
@@ -36,26 +45,19 @@ const saveFund = (name, charities, cause, callback) => {
   });
 };
 
-const saveDonation = (source, amount, email, platformFee, timestamp, fundId, callback) => {
+const findFundById = (id, userFund, callback) => {
 
-  const newDonation = new Donation({
-    pandapay_id: new mongoose.Types.ObjectId,
-    source,
-    amount,
-    email,
-    platformFee,
-    timestamp,
-    fund: fundId,
-  })
+  console.log("id", id)
 
-  newDonation.save((err) => {
-    if (err) {
-      callback(err);
-    } else {
-      callback(null);
-    }
-  });
-
+  if (userFund) {
+    Userfund.find({_id: id}).then((data) => {
+      callback(data)
+    })
+  } else {
+    Fund.find({_id: id}).then((data) => {
+      callback(data)
+    })
+  }
 }
 
 const fetchFundId = (fundName, callback) => {
@@ -71,6 +73,10 @@ const fetchFundId = (fundName, callback) => {
 }
 
 module.exports.saveFund = saveFund;
-module.exports.saveDonation = saveDonation;
 module.exports.saveUser = saveUser;
-module.exports.fetchFundId = fetchFundId;
+module.exports.fetchFunds = fetchFunds;
+module.exports.User = User;
+module.exports.Donation = Donation;
+module.exports.Fund = Fund;
+module.exports.findFundById = findFundById;
+
