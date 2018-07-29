@@ -5,14 +5,10 @@ const bodyParser = require('body-parser')
 const db = require('../db/index.js')
 const axios = require('axios')
 
-const app = express();
-
 require('dotenv').config();
 
 app.use(express.static('dist'));
 app.use(bodyParser.json());
-
-app.get('*', (req, res) => res.sendFile(path.resolve('./../dist/index.html')));
 
 //more than one fund can go to this endpoint
 
@@ -33,7 +29,7 @@ app.post('/donations', (req, res) => {
           receipt_email: req.body.email,
           platform_fee: 0.02 * req.body.amount
         }).then((response) => {
-          res.send(data.charities)
+          res.send(data[0].charities)
           
         //but we will actually 
         }).catch((err) => {
@@ -77,6 +73,8 @@ app.get('/causes/:category', (req, res) => {
       res.status(500).send('Error fetching causes')
     })
 })
+
+app.get('*', (req, res) => res.sendFile(path.resolve('./../dist/index.html')));
 
 app.listen(2000, () => {
   console.log('listening on port 2000');
