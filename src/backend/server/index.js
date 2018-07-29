@@ -22,11 +22,6 @@ app.post('/donations', (req, res) => {
     source: req.source,
     receipt_email: req.email,
     platform_fee: req.platformFee,
-  }, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'sk_test_VqeLRlTF9__rpiMIHuXu2g'
-    }
   }).then((response) => {
     res.send(response)
   }).catch((err) => {
