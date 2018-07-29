@@ -25,60 +25,55 @@ app.post('/donations', (req, res) => {
   //post a donation
   let grantsCompleted = 0;
 
-  Fund.findById(req.body.fundId, function(err, fund) {
-    if (err) console.log(err);
-    console.log(fund);
+  db.findFundById(req.body.fundId, false, data => {
+    if (data.length === 0) {
+      res.status(500).send('error finding fund information');
+    } else {
+      axios
+        .post(`https://${process.env.PANDAPAY_SECRET_KEY}:@api.pandapay.io/v1/donations`, {
+          amount: req.body.amount,
+          currency: 'usd',
+          source: req.body.source,
+          receipt_email: req.body.email,
+          platform_fee: 0.02 * req.body.amount
+        })
+        .then(result => {
+          data[0].charities.forEach(charity => {
+            axios
+              .post(
+                `https://${process.env.PANDAPAY_SECRET_KEY}:@api.pandapay.io/v1/donations/${result.data.id}/grants`,
+                {
+                  amount: req.body.amount * charity.percent_donation,
+                  destination: charity.id.toString().slice(0, 2) + '-' + charity.id.toString().slice(2)
+                }
+              )
+              .then(response => {
+                console.log(
+                  'THIS URL WORKED',
+                  `https://${process.env.PANDAPAY_SECRET_KEY}:@api.pandapay.io/v1/donations/${result.data.id}/grants`
+                );
+                console.log(charity);
+                grantsCompleted++;
+                if (grantsCompleted === data[0].charities.length) {
+                  res.send('success on creating grants');
+                }
+              })
+              .catch(error => {
+                console.log(
+                  'THIS URL DID NOT',
+                  `https://${process.env.PANDAPAY_SECRET_KEY}:@api.pandapay.io/v1/donations/${result.data.id}/grants`
+                );
+                console.log(charity);
+                res.status(500).send('Error posting a grant');
+              });
+          });
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(500).send('could not post');
+        });
+    }
   });
-
-  // db.findFundById(req.body.fundId, false, data => {
-  //   if (data.length === 0) {
-  //     res.status(500).send('error finding fund information');
-  //   } else {
-  //     axios
-  //       .post(`https://${process.env.PANDAPAY_SECRET_KEY}:@api.pandapay.io/v1/donations`, {
-  //         amount: req.body.amount,
-  //         currency: 'usd',
-  //         source: req.body.source,
-  //         receipt_email: req.body.email,
-  //         platform_fee: 0.02 * req.body.amount
-  //       })
-  //       .then(result => {
-  //         data[0].charities.forEach(charity => {
-  //           axios
-  //             .post(
-  //               `https://${process.env.PANDAPAY_SECRET_KEY}:@api.pandapay.io/v1/donations/${result.data.id}/grants`,
-  //               {
-  //                 amount: req.body.amount * charity.percent_donation,
-  //                 destination: charity.id.toString().slice(0, 2) + '-' + charity.id.toString().slice(2)
-  //               }
-  //             )
-  //             .then(response => {
-  //               console.log(
-  //                 'THIS URL WORKED',
-  //                 `https://${process.env.PANDAPAY_SECRET_KEY}:@api.pandapay.io/v1/donations/${result.data.id}/grants`
-  //               );
-  //               console.log(charity);
-  //               grantsCompleted++;
-  //               if (grantsCompleted === data[0].charities.length) {
-  //                 res.send('success on creating grants');
-  //               }
-  //             })
-  //             .catch(error => {
-  //               console.log(
-  //                 'THIS URL DID NOT',
-  //                 `https://${process.env.PANDAPAY_SECRET_KEY}:@api.pandapay.io/v1/donations/${result.data.id}/grants`
-  //               );
-  //               console.log(charity);
-  //               res.status(500).send('Error posting a grant');
-  //             });
-  //         });
-  //       })
-  //       .catch(err => {
-  //         console.log(err);
-  //         res.status(500).send('could not post');
-  //       });
-  //   }
-  // });
 });
 
 app.post('/userfunds', (req, res) => {
