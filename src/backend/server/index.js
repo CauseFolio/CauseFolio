@@ -140,8 +140,9 @@ app.get('/local', (req, res) => {
 
 app.get('*', (req, res) => res.sendFile(path.resolve('./../dist/index.html')));
 
-app.listen(2000, () => {
-  console.log('listening on port 2000');
+const port = process.env.PORT || 2000;
+app.listen(port, () => {
+  console.log('listening on port ' + process.env.PORT);
 });
 
 module.exports = app;
