@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 console.log(process.env);
 
-require('../db/lib/seedfunds.js');
+// require('../db/lib/seedfunds.js');
 
 const db = require('../db/index.js');
 
@@ -142,7 +142,7 @@ app.get('/local', (req, res) => {
 
 app.get('*', (req, res) => res.sendFile(path.resolve('./../dist/index.html')));
 
-const port = process.env.PORT || 2000;
+const port = process.env.PORT;
 app.listen(port, () => {
   console.log('listening on port ' + process.env.PORT);
 });

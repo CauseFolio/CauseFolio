@@ -162,7 +162,7 @@ const App = () => (
     </Callouts>
 
     <CTA>
-      <Donate />
+      <Route path="/" component={Donate} />
     </CTA>
 
     <Footer>
