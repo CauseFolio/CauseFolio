@@ -61,8 +61,29 @@ app.post('/donations', (req, res) => {
   }
 });
 
+app.post('/userfunds', (req, res) => {
+
+  db.saveUserfund(req.body.fundIds, (err, data) => {
+    if (err) {
+      console.log(err)
+      res.status(500).send('error saving user fund')
+    } else {
+      console.log(data.id)
+      db.populateUserfund(data.id, (err, data) => {
+        if (err) {
+          res.status(500).send('error populating user fund')
+          console.log("ERR", err)
+        } else {
+          res.send('User fund saved and populated')
+        }
+      })
+    }
+  })
+
+})
+
 app.get('/funds', (req, res) => {
-  //get information for all causes and all charities
+  //get information for all categories
 
   db.fetchFunds((err, data) => {
     if (err) {
