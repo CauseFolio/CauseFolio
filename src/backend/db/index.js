@@ -81,7 +81,7 @@ const findFundById = (id, userFund, callback) => {
       callback(data);
     });
   } else {
-    Fund.find({ _id: id }).then(data => {
+    Fund.find({ _id: { $oid: id } }).then(data => {
       console.log('fund', data);
       callback(data);
     });
