@@ -9,6 +9,8 @@ if (process.env.NODE_ENV === 'development') {
 }
 console.log(process.env);
 
+require('../db/lib/seedfunds.js');
+
 const db = require('../db/index.js');
 
 app.use(express.static('dist'));
