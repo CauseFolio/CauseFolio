@@ -6,6 +6,7 @@ const fundSchema = mongoose.Schema({
     name: String,
     percent_donation: Number,
   }],
+  cause: String
 });
 
 const userfundSchema = mongoose.Schema({

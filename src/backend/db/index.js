@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { Fund, User, Donation } = require('./models.js');
+const { Fund, User, Donation, Userfund } = require('./models.js');
 const { assignCharityPercentages } = require('./lib/helpers.js');
 
 mongoose.connect('mongodb://localhost/causefolio');
@@ -84,3 +84,6 @@ module.exports.saveFund = saveFund;
 module.exports.saveDonation = saveDonation;
 module.exports.saveUser = saveUser;
 module.exports.fetchFunds = fetchFunds;
+module.exports.User = User;
+module.exports.Donation = Donation;
+module.exports.Fund = Fund;
