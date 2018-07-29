@@ -66,15 +66,10 @@ const saveUserfund = (fundIds, callback) => {
 
 } 
 
-const populateUserfund = (id, callback) => {
-
-  Userfund.findOne({_id: id}).populate('funds').exec((err, userfund) => {
-    if (err) {
-      callback(err, null)
-    } else {
-      callback(null, userfund)
-    }
-  })
+const getUserfund = (id, callback) => {
+  Userfund.findOne({
+    _id: id}
+  ).populate({path: 'funds', populate: {path: 'fund', model: 'Fund'}}).exec(callback);
 }
 
 const findFundById = (id, userFund, callback) => {
@@ -101,5 +96,6 @@ module.exports.Donation = Donation;
 module.exports.Fund = Fund;
 module.exports.findFundById = findFundById;
 module.exports.populateUserfund = populateUserfund
+module.exports.getUserfund = getUserfund
 
 
