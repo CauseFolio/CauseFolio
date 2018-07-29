@@ -1,20 +1,18 @@
-const express = require('express')
-const app = express()
-const bodyParser = require('body-parser')
+const path = require('path');
+const express = require('express');
+const bodyParser = require('body-parser');
 
-require('dotenv').config()
+const app = express();
 
-const options = {
-  root: __dirname + '/dist/'
-}
+require('dotenv').config();
 
-app.use(express.static('dist'))
+app.use(express.static('dist'));
 app.use(bodyParser.json());
 
-app.get('*', (req, res) => res.sendFile('index.html', options))
+app.get('*', (req, res) => res.sendFile(path.resolve('./../dist/index.html')));
 
 app.listen(2000, () => {
-  console.log('listening on port 2000')
-})
+  console.log('listening on port 2000');
+});
 
 module.exports = app;
