@@ -10,7 +10,7 @@ const fundSchema = mongoose.Schema({
 });
 
 const userfundSchema = mongoose.Schema({
-  user: String,
+
   funds: [{
     fund: {type: mongoose.Schema.Types.ObjectId, ref: 'Fund'},
     percent_donation: Number
