@@ -8,6 +8,7 @@ import logo from './logo.svg';
 import banner from './banner.jpg';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Donate from './donate.jsx';
+import Funds from './funds';
 
 injectGlobal`
   ${styledNormalize}
@@ -163,6 +164,7 @@ const App = () => (
 
     <CTA>
       <Route path="/" component={Donate} />
+      <Route path="/funds/:id" component={Funds} />
     </CTA>
 
     <Footer>

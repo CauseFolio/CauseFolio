@@ -59,7 +59,7 @@ class Donate extends React.Component {
     if (process.env.NODE_ENV === 'production') {
       url = `https://causefolio.herokuapp.com/funds`;
     } else {
-      url = 'http://localhost:2000/funds';
+      url = `http://localhost:2000/funds/`;
     }
 
     fetch(url)
@@ -83,7 +83,7 @@ class Donate extends React.Component {
   }
 
   sendFunds() {
-    fetch('http://localhost:2000/funds/new', { method: 'POST' });
+    fetch('http://localhost:2000/userfunds', { method: 'POST', body: JSON.stringify(this.state.selectedFunds) });
   }
 
   render() {
@@ -106,7 +106,7 @@ class Donate extends React.Component {
               );
             })}
           </Funds>
-          <Button>Next</Button>
+          <Button onClick={() => this.sendFunds()}>Next</Button>
         </div>
       );
     }
