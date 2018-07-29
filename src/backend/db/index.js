@@ -9,7 +9,6 @@ const fetchFunds = callback => {
     if (err) {
       callback(err, null);
     } else {
-      console.log(data);
       callback(null, data);
     }
   });
@@ -83,6 +82,7 @@ const findFundById = (id, userFund, callback) => {
     });
   } else {
     Fund.find({ _id: id }).then(data => {
+      console.log('fund', data);
       callback(data);
     });
   }

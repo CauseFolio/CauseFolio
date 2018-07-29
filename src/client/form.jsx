@@ -106,7 +106,7 @@ class Form extends React.Component {
 
         <div id="tokenize">
           <button type="submit" onSubmit={event => event.preventDefaut()}>
-            Tokenize!
+            Donate
           </button>
         </div>
       </form>
